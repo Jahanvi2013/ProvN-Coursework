@@ -1,0 +1,82 @@
+document 
+
+prefix ex <http://example.com/>
+
+entity(ex:Qualtrics,[prov:type='ex:OnlineSurveyMaker'])
+activity(ex:SurveyCreation,[prov:label="Creation of Passport Data Survey",prov:startTime="2024-09-27T00:00:00Z", prov:endTime="2024-10-04T00:00:00Z",prov:location="Crawford House, University of Manchester"])
+used(ex:SurveyCreation, ex:Qualtrics, -)
+
+agent(ex:TeamMagenta, 
+[prov:type='ex:Group', prov:label="University Group"])
+wasAssociatedWith(ex:SurveyCreation, ex:TeamMagenta, -)
+
+entity(ex:PassportOfficeSurvey, [ex:responses="16"])
+wasGeneratedBy(ex:PassportOfficeSurvey, ex:SurveyCreation, -)
+
+
+activity(ex:MetadataCreation1, [prov:startTime="2024-10-06T00:00:00Z", prov:endTime="2024-10-09T00:00:00Z",
+prov:location="Crawford House, University of Manchester", 
+prov:label="Creation of Passport Data Survey\'s Metadata"])
+used(ex:MetadataCreation1, ex:PassportOfficeSurvey, -)
+
+wasAssociatedWith(ex:MetadataCreation1, ex:TeamMagenta, -)
+
+entity(ex:EmployabilityIndicator,
+[prov:type='ex:Indicator', 
+prov:label="Determinant Equation of Employability", 
+prov:value="numeric",
+prov:description="Value between 14 and 100"])
+wasAssociatedWith(ex:EmployabilityIndicator, ex:TeamMagenta, -)
+
+activity(ex:EmployabilityIndicatorCreation, [prov:startTime="2024-10-15T00:00:00Z", prov:endTime="2024-10-17T00:00:00Z",
+prov:location="Crawford House, University of Manchester"])
+wasGeneratedBy(ex:EmployabilityIndicator, ex:EmployabilityIndicatorCreation, -)
+
+entity(ex:LevelOfEducation,[prov:type='ex:SurveyData', 
+prov:label="Highest Education Achieved",
+prov:value="1, 2, 3, 4, 5"])
+used(ex:EmployabilityIndicatorCreation, ex:LevelOfEducation, -)
+
+entity(ex:CriminalConvictions,[prov:type='ex:SurveyData', 
+prov:label="Unspent Criminal Convictions", 
+prov:value="Y, N"])
+used(ex:EmployabilityIndicatorCreation, ex:CriminalConvictions, -)
+
+entity(ex:ElectoralRegistryMetadata,[prov:type='ex:Metadata', 
+prov:label="Team Green\'s Metadata"])
+wasDerivedFrom(ex:CriminalConvictions, ex:ElectoralRegistryMetadata)
+wasDerivedFrom(ex:LevelOfEducation, ex:ElectoralRegistryMetadata)
+
+activity(ex:MetadataCreation2, [prov:location="Crawford House, University of Manchester", 
+prov:label="Creation of Electoral Registry Survey\'s Metadata"])
+wasGeneratedBy(ex:ElectoralRegistryMetadata, ex:MetadataCreation2, -)
+
+agent(ex:TeamGreen, 
+[prov:type='ex:Group', prov:label="University Group"])
+wasAssociatedWith(ex:MetadataCreation2, ex:TeamGreen, -)
+
+entity(ex:MicrosoftExcel)
+used(ex:MetadataCreation2, ex:MicrosoftExcel, -)
+
+activity(ex:MetadataCreation3, [prov:location="Crawford House, University of Manchester", 
+prov:label="Creation of Cycle of Work Survey\'s Metadata"])
+used(ex:MetadataCreation3, ex:MicrosoftExcel, -)
+
+agent(ex:TeamPink, 
+[prov:type='ex:Group', prov:label="University Group"])
+wasAssociatedWith(ex:MetadataCreation3, ex:TeamPink, -)
+
+entity(ex:CycleOfWorkMetadata,
+[prov:type='ex:Metadata', 
+prov:label="Team Pink\'s Metadata"])
+wasGeneratedBy(ex:CycleOfWorkMetadata, ex:MetadataCreation3, -)
+
+entity(ex:YearsOfWorkExperience,
+[prov:type='ex:SurveyData', 
+prov:label="Number of Years of Work Experience", 
+prov:value="1, 2, 3, 4, 5"])
+wasDerivedFrom(ex:YearsOfWorkExperience, ex:CycleOfWorkMetadata)
+
+used(ex:EmployabilityIndicatorCreation, ex:YearsOfWorkExperience, -)
+
+endDocument
